@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CocktailAPI</string>
+    <string name="category_label">Category</string>
+</resources>
