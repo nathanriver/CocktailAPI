@@ -3,6 +3,8 @@ package com.jonathan.cocktailapi;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -27,10 +29,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private ActivityMainBinding binding;
     private DrinkAdapter drinkAdapter;
@@ -51,20 +52,21 @@ public class MainActivity extends AppCompatActivity {
         //  Set Adapter
         binding.rvData.setAdapter(getDrinkAdapter());
 
-        // Divider
-//        DividerItemDecoration decoration = new DividerItemDecoration(binding.rvData.getContext(), manager.getOrientation());
-//        binding.rvData.addItemDecoration(decoration);
-
         //  Load Category Data
         loadCategoryData();
 
         //  Load Drink Data
-        loadDrinkData();
+//        loadDrinkData();
 
-        // SR Layout
+        //  SR Layout
         binding.srLayout.setOnRefreshListener(() -> {
             binding.srLayout.setRefreshing(false);
         });
+
+        //  Spin Listener
+        binding.spinCategory.setOnItemSelectedListener(this);
+
+
     }
 
     public DrinkAdapter getDrinkAdapter() {
@@ -99,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //  https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail
-    private void loadDrinkData() {
+    private void loadDrinkData(String categoryName) {
         RequestQueue queue = Volley.newRequestQueue(this);
         Uri uri = Uri.parse("https://www.thecocktaildb.com/api/json/v1/1/filter.php").buildUpon()
-                .appendQueryParameter("c", "Cocktail")
+                .appendQueryParameter("c", categoryName)
                 .build();
         StringRequest request = new StringRequest(Request.Method.GET, uri.toString(), response -> {
             try {
@@ -134,5 +136,17 @@ public class MainActivity extends AppCompatActivity {
             error.printStackTrace();
         });
         queue.add(request);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String item = adapterView.getItemAtPosition(i).toString();
+        loadDrinkData(item);
+    }
+
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
