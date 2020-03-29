@@ -1,5 +1,8 @@
 package com.jonathan.cocktailapi.entity;
 
+/**
+ * @author 1772004 - Jonathan Bernad
+ */
 public class DrinkResponse {
 
     private Drink[] drinks;

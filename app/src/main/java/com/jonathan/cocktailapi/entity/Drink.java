@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import androidx.annotation.NonNull;
 
+/**
+ * @author 1772004 - Jonathan Bernad
+ */
 public class Drink {
 
     @SerializedName("idDrink")

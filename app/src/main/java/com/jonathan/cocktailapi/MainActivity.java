@@ -1,11 +1,8 @@
 package com.jonathan.cocktailapi;
 
-import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -33,6 +30,9 @@ import java.util.Arrays;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+/**
+ * @author 1772004 - Jonathan Bernad
+ */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, DrinkAdapter.ItemClickListener {
 
     private ActivityMainBinding binding;

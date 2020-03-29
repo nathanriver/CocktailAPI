@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jonathan.cocktailapi.GlideApp;
-import com.jonathan.cocktailapi.MainActivity;
 import com.jonathan.cocktailapi.R;
 import com.jonathan.cocktailapi.entity.Drink;
 
@@ -20,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author 1772004 - Jonathan Bernad
+ */
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
 
     private ArrayList<Drink> drinks;
