@@ -1,17 +1,19 @@
 package com.jonathan.cocktailapi.entity;
 
+import java.util.ArrayList;
+
 /**
  * @author 1772004 - Jonathan Bernad
  */
 public class DrinkResponse {
 
-    private Drink[] drinks;
+    private ArrayList<Drink> drinks;
 
-    public Drink[] getDrinks() {
+    public ArrayList<Drink> getDrinks() {
         return drinks;
     }
 
-    public void setDrinks(Drink[] drinks) {
+    public void setDrinks(ArrayList<Drink> drinks) {
         this.drinks = drinks;
     }
 }

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -86,14 +85,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void loadCategoryData() {
         try {
-            InputStream inputStream = getAssets().open("drink_categoryv2.json");
+            InputStream inputStream = getAssets().open("drink_category.json");
             JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
             Gson gson = new Gson();
-            Drink[] drinks = gson.fromJson(reader, Drink[].class);
-            ArrayList<Drink> listDrinks = new ArrayList<>(Arrays.asList(drinks));
+
+            DrinkResponse drinkResponse = gson.fromJson(reader, DrinkResponse.class);
 
             // Set Spinner ArrayAdapter
-            binding.spinCategory.setAdapter(getCategoryArrayAdapter(listDrinks));
+            binding.spinCategory.setAdapter(getCategoryArrayAdapter(drinkResponse.getDrinks()));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,20 +112,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 DrinkResponse drinkResponse = gson.fromJson(object.toString(), DrinkResponse.class);
 
-                // Drink List
-                ArrayList<Drink> listDrink = new ArrayList<>();
-
-                for (int i = 0; i < drinkResponse.getDrinks().length; i++) {
-                    Drink dr = drinkResponse.getDrinks()[i];
-
-                    Drink d = new Drink();
-                    d.setName(dr.getName());
-                    d.setThumbnail(dr.getThumbnail());
-                    d.setId(dr.getId());
-
-                    listDrink.add(d);
-                }
-                drinkAdapter.changeData(listDrink);
+                drinkAdapter.changeData(drinkResponse.getDrinks());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -151,18 +137,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 DrinkResponse drinkResponse = gson.fromJson(object.toString(), DrinkResponse.class);
 
-                // Drink List
-                ArrayList<Drink> listDrink = new ArrayList<>();
-
-                for (int i = 0; i < drinkResponse.getDrinks().length; i++) {
-                    Drink dr = drinkResponse.getDrinks()[i];
-
-                    Drink d = new Drink();
-                    d.setInstructions(dr.getInstructions());
-
-                    listDrink.add(d);
-                }
-                Toast.makeText(this, listDrink.get(0).getInstructions(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, drinkResponse.getDrinks().get(0).getInstructions(), Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();
