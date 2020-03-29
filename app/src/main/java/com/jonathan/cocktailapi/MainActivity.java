@@ -33,7 +33,7 @@ import java.util.Arrays;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, DrinkAdapter.ItemClickListener {
 
     private ActivityMainBinding binding;
     private DrinkAdapter drinkAdapter;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public DrinkAdapter getDrinkAdapter() {
         if (drinkAdapter == null) {
-            drinkAdapter = new DrinkAdapter(this);
+            drinkAdapter = new DrinkAdapter(this, this);
         }
         return drinkAdapter;
     }
@@ -138,6 +138,42 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         queue.add(request);
     }
 
+    //  https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita
+    private void loadDrinkInstructions(String drinkName) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        Uri uri = Uri.parse("https://www.thecocktaildb.com/api/json/v1/1/search.php").buildUpon()
+                .appendQueryParameter("s", drinkName)
+                .build();
+        StringRequest request = new StringRequest(Request.Method.GET, uri.toString(), response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                Gson gson = new Gson();
+
+                DrinkResponse drinkResponse = gson.fromJson(object.toString(), DrinkResponse.class);
+
+                // Drink List
+                ArrayList<Drink> listDrink = new ArrayList<>();
+
+                for (int i = 0; i < drinkResponse.getDrinks().length; i++) {
+                    Drink dr = drinkResponse.getDrinks()[i];
+
+                    Drink d = new Drink();
+                    d.setInstructions(dr.getInstructions());
+
+                    listDrink.add(d);
+                }
+                Toast.makeText(this, listDrink.get(0).getInstructions(), Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            error.printStackTrace();
+        });
+        queue.add(request);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = adapterView.getItemAtPosition(i).toString();
@@ -148,5 +184,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void itemClicked(Drink drink) {
+        loadDrinkInstructions(drink.getName());
     }
 }

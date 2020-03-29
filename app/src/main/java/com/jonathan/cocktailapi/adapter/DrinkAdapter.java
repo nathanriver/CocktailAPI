@@ -24,9 +24,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
     private ArrayList<Drink> drinks;
     private Context context;
+    private ItemClickListener clickListener;
 
 
-    public DrinkAdapter(Context c) {
+    public DrinkAdapter(Context c, ItemClickListener clickListener) {
+        this.clickListener = clickListener;
         drinks = new ArrayList<>();
         context = c;
     }
@@ -47,6 +49,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
                 .load(drink.getThumbnail())
                 .into(holder.ivDrinkThumbnail);
 
+
+        holder.itemView.setOnClickListener(v -> {
+            clickListener.itemClicked(drink);
+        });
     }
 
     public void changeData(ArrayList<Drink> source) {
@@ -72,5 +78,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface ItemClickListener {
+
+        void itemClicked(Drink drink);
     }
 }
