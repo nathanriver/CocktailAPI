@@ -1,5 +1,7 @@
 package com.jonathan.cocktailapi;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -65,13 +67,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //  Spin Listener
         binding.spinCategory.setOnItemSelectedListener(this);
-
-
     }
 
     public DrinkAdapter getDrinkAdapter() {
         if (drinkAdapter == null) {
-            drinkAdapter = new DrinkAdapter();
+            drinkAdapter = new DrinkAdapter(this);
         }
         return drinkAdapter;
     }

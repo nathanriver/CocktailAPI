@@ -1,10 +1,15 @@
 package com.jonathan.cocktailapi.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.jonathan.cocktailapi.GlideApp;
+import com.jonathan.cocktailapi.MainActivity;
 import com.jonathan.cocktailapi.R;
 import com.jonathan.cocktailapi.entity.Drink;
 
@@ -18,9 +23,12 @@ import butterknife.ButterKnife;
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
 
     private ArrayList<Drink> drinks;
+    private Context context;
 
-    public DrinkAdapter() {
+
+    public DrinkAdapter(Context c) {
         drinks = new ArrayList<>();
+        context = c;
     }
 
     @NonNull
@@ -34,6 +42,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink drink = drinks.get(position);
         holder.txtDrinkName.setText(drink.getName());
+
+        GlideApp.with(context)
+                .load(drink.getThumbnail())
+                .into(holder.ivDrinkThumbnail);
+
     }
 
     public void changeData(ArrayList<Drink> source) {
@@ -51,6 +64,9 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
         @BindView(R.id.tv_drink_name)
         TextView txtDrinkName;
+
+        @BindView(R.id.iv_drink_thumbnail)
+        ImageView ivDrinkThumbnail;
 
         public DrinkViewHolder(@NonNull View itemView) {
             super(itemView);
